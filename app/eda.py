@@ -29,10 +29,18 @@ def preprocess_data() -> pd.DataFrame:
     aggregated_df = loans.groupby('ID_CLIENT').agg(LOAN_NUM_TOTAL=('ID_LOAN', 'count'),
                                                    LOAN_NUM_CLOSED=('CLOSED_FL', 'sum')).reset_index()
     df = pd.merge(df, aggregated_df, on='ID_CLIENT', how='left')
+    df = pd.merge(df, df_last_credit, on='ID_CLIENT', how='left')
+    df = df.rename(columns={'CREDIT': 'LAST_CREDIT'})
+
+    mapping = {'до 5000 руб.': 1, 'от 5000 до 10000 руб.': 2, 'от 10000 до 20000 руб.': 3, 'от 20000 до 50000 руб.': 4,
+               'свыше 50000 руб.': 5}
+    for group, number in mapping.items():
+        df['FAMILY_INCOME'] = df['FAMILY_INCOME'].replace(group, number)
+    df['FAMILY_INCOME'] = df['FAMILY_INCOME'].astype(int)
 
     df = df.drop(
-        ['FAMILY_INCOME', 'MARITAL_STATUS', 'REG_ADDRESS_PROVINCE', 'FACT_ADDRESS_PROVINCE', 'POSTAL_ADDRESS_PROVINCE',
-         'EDUCATION', 'ID_CLIENT'], axis=1)
+        ['MARITAL_STATUS', 'REG_ADDRESS_PROVINCE', 'FACT_ADDRESS_PROVINCE', 'POSTAL_ADDRESS_PROVINCE', 'EDUCATION',
+         'ID_CLIENT'], axis=1)
     df = df.drop_duplicates()
     df = df.dropna()
 
