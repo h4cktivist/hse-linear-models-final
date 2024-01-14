@@ -152,8 +152,6 @@ with tab2:
         fst_payment = st.number_input('Первоначальный взнос по последнему кредиту')
         st.write('**Или введите ID клиента из датасета**')
         id = st.text_input('ID')
-        st.write('**Выберите вероятностный порог для предсказания**')
-        threshold = st.slider('Порог, %', min_value=0, max_value=100, value=0, step=1)
 
         if st.form_submit_button('Предсказать!'):
             with st.spinner('Предсказываем...'):
@@ -178,11 +176,10 @@ with tab2:
                         'FST_PAYMENT': int(fst_payment)
                     }
                     data = pd.DataFrame(data, index=[0])
-                pred, prob = make_prediction(data, int(threshold) / 100)
+                pred, prob = make_prediction(data)
                 print(pred, prob)
                 st.write('## Предсказание:')
                 st.write(f'### {pred}')
                 st.write(f'Вероятность того, что клиент даст положительный ответ: {int(round(prob, 2) * 100)}%')
-                st.write(f'При пороге вероятности равном {threshold}%')
                 st.write(f'Данные: ')
                 st.write(data)

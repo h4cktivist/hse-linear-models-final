@@ -18,12 +18,12 @@ def load_model():
     return model
 
 
-def make_prediction(df: pd.DataFrame, threshold: float):
+def make_prediction(df: pd.DataFrame):
     model = load_model()
 
     df = pd.DataFrame(ss.transform(df), columns=df.columns)
     probs = model.predict_proba(df)
-    classes = probs[:, 1] > threshold
+    classes = probs[:, 1] > 0.4742448484764867
 
     result_classes = {
         False: 'Скорее всего, клиент даст негативный ответ на предложение банка.',
