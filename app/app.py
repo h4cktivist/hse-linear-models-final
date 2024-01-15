@@ -3,12 +3,11 @@ import pandas as pd
 
 from PIL import Image
 
-from eda import preprocess_data
-from classification import make_prediction
+from functions import get_data, make_prediction
 
 
 st.set_page_config(page_title='', layout='wide')
-df = preprocess_data()
+df = get_data()
 
 
 st.title(':bank: Склонность клиентов давать положительный ответ на предложение банка')
@@ -159,23 +158,22 @@ with tab2:
                     data = df.loc[[int(id)]].drop(['AGREEMENT_RK', 'TARGET'], axis=1)
                 else:
                     data = {
-                        'AGE': int(age),
-                        'GENDER': 0 if gender == 'Женщина' else 1,
-                        'CHILD_TOTAL': int(children),
-                        'DEPENDANTS': int(dependants),
-                        'SOCSTATUS_WORK_FL': 0 if soc_work == 'Безработный' else 1,
-                        'SOCSTATUS_PENS_FL': 0 if soc_pen == 'Не пенсионер' else 1,
-                        'FL_PRESENCE_FL': 0 if fl_pres == 'Нет' else 1,
-                        'OWN_AUTO': int(cars),
-                        'FAMILY_INCOME': get_fam_income(fam_inc),
-                        'PERSONAL_INCOME': int(per_inc),
-                        'LOAN_NUM_TOTAL': int(loan_num),
-                        'LOAN_NUM_CLOSED': int(cl_loan_num),
-                        'LAST_CREDIT': int(last_loan),
-                        'TERM': int(term),
-                        'FST_PAYMENT': int(fst_payment)
+                        'age': int(age),
+                        'gender': 0 if gender == 'Женщина' else 1,
+                        'child_total': int(children),
+                        'dependants': int(dependants),
+                        'socstatus_work_fl': 0 if soc_work == 'Безработный' else 1,
+                        'socstatus_pens_fl': 0 if soc_pen == 'Не пенсионер' else 1,
+                        'fl_presence_fl': 0 if fl_pres == 'Нет' else 1,
+                        'own_auto': int(cars),
+                        'family_income': get_fam_income(fam_inc),
+                        'personal_income': int(per_inc),
+                        'loan_num_total': int(loan_num),
+                        'loan_num_closed': int(cl_loan_num),
+                        'last_credit': int(last_loan),
+                        'term': int(term),
+                        'fst_payment': int(fst_payment)
                     }
-                    data = pd.DataFrame(data, index=[0])
                 pred, prob = make_prediction(data)
                 print(pred, prob)
                 st.write('## Предсказание:')
