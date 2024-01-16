@@ -1,4 +1,4 @@
 .idea
-app/__pycache__/
-api/__pycache__/
-api/db/__pycache__/
+frontend/__pycache__/
+backend/__pycache__/
+backend/db/__pycache__/
