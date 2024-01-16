@@ -174,10 +174,13 @@ with tab2:
                         'term': int(term),
                         'fst_payment': int(fst_payment)
                     }
-                pred, prob = make_prediction(data)
-                print(pred, prob)
-                st.write('## Предсказание:')
-                st.write(f'### {pred}')
-                st.write(f'Вероятность того, что клиент даст положительный ответ: {int(round(prob, 2) * 100)}%')
-                st.write(f'Данные: ')
-                st.write(data)
+                res = make_prediction(data)
+                if res:
+                    print(res[0], res[1])
+                    st.write('## Предсказание:')
+                    st.write(f'### {res[0]}')
+                    st.write(f'Вероятность того, что клиент даст положительный ответ: {int(round(res[1], 2) * 100)}%')
+                    st.write(f'Данные: ')
+                    st.write(data)
+                else:
+                    st.write('Возникла ошибка!')

@@ -12,5 +12,7 @@ def get_data():
 
 def make_prediction(data):
     URL = 'http://127.0.0.1:8000/predict'
-    res = requests.post(URL, json=data).json()
-    return res['pred'], res['proba']
+    res = requests.post(URL, json=data)
+    if res.status_code != 200:
+        return None
+    return res.json()['pred'], res.json()['proba']
