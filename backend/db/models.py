@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, Float
-from .init import Base, SessionLocal
+from .init import Base
 
 
 class Record(Base):
@@ -22,3 +22,6 @@ class Record(Base):
     last_credit = Column(Float)
     term = Column(Integer)
     fst_payment = Column(Float)
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}

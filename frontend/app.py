@@ -24,7 +24,6 @@ st.write('Данные были предварительно обработан�
 st.write(df)
 st.write(
     '''
-    - `AGREEMENT_RK` — уникальный идентификатор объекта в выборке;
     - `TARGET` — целевая переменная: отклик на маркетинговую кампанию (1 — отклик был зарегистрирован, 0 — отклика не было);
     - `AGE` — возраст клиента;
     - `GENDER` — пол клиента (1 — мужчина, 0 — женщина);
@@ -155,7 +154,7 @@ with tab2:
         if st.form_submit_button('Предсказать!'):
             with st.spinner('Предсказываем...'):
                 if id != '':
-                    data = df.loc[[int(id)]].drop(['AGREEMENT_RK', 'TARGET'], axis=1)
+                    data = df.loc[[int(id)]].drop(['TARGET'], axis=1)
                 else:
                     data = {
                         'age': int(age),
@@ -167,20 +166,17 @@ with tab2:
                         'fl_presence_fl': 0 if fl_pres == 'Нет' else 1,
                         'own_auto': int(cars),
                         'family_income': get_fam_income(fam_inc),
-                        'personal_income': int(per_inc),
+                        'personal_income': float(per_inc),
                         'loan_num_total': int(loan_num),
                         'loan_num_closed': int(cl_loan_num),
-                        'last_credit': int(last_loan),
+                        'last_credit': float(last_loan),
                         'term': int(term),
-                        'fst_payment': int(fst_payment)
+                        'fst_payment': float(fst_payment)
                     }
                 res = make_prediction(data)
                 if res:
-                    print(res[0], res[1])
                     st.write('## Предсказание:')
                     st.write(f'### {res[0]}')
                     st.write(f'Вероятность того, что клиент даст положительный ответ: {int(round(res[1], 2) * 100)}%')
-                    st.write(f'Данные: ')
-                    st.write(data)
                 else:
                     st.write('Возникла ошибка!')
