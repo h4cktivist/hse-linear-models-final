@@ -4,14 +4,14 @@ import pandas as pd
 
 
 def get_data():
-    URL = 'http://127.0.0.1:8000/get-data'
+    URL = 'https://hse-linear-models.onrender.com/get-data'
     res = requests.get(URL)
     df = pd.json_normalize(res.json())
     return df
 
 
 def make_prediction(data):
-    URL = 'http://127.0.0.1:8000/predict'
+    URL = 'https://hse-linear-models.onrender.com/predict'
     res = requests.post(URL, json=data)
     if res.status_code != 200:
         return None
