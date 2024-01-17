@@ -148,31 +148,26 @@ with tab2:
         last_loan = st.number_input('Сумма последнего кредита')
         term = st.slider('Срок последнего кредита', min_value=0, max_value=40, value=0, step=1)
         fst_payment = st.number_input('Первоначальный взнос по последнему кредиту')
-        st.write('**Или введите ID клиента из датасета**')
-        id = st.text_input('ID')
 
         if st.form_submit_button('Предсказать!'):
             with st.spinner('Предсказываем...'):
-                if id != '':
-                    data = df.loc[[int(id)]].drop(['TARGET'], axis=1)
-                else:
-                    data = {
-                        'age': int(age),
-                        'gender': 0 if gender == 'Женщина' else 1,
-                        'child_total': int(children),
-                        'dependants': int(dependants),
-                        'socstatus_work_fl': 0 if soc_work == 'Безработный' else 1,
-                        'socstatus_pens_fl': 0 if soc_pen == 'Не пенсионер' else 1,
-                        'fl_presence_fl': 0 if fl_pres == 'Нет' else 1,
-                        'own_auto': int(cars),
-                        'family_income': get_fam_income(fam_inc),
-                        'personal_income': float(per_inc),
-                        'loan_num_total': int(loan_num),
-                        'loan_num_closed': int(cl_loan_num),
-                        'last_credit': float(last_loan),
-                        'term': int(term),
-                        'fst_payment': float(fst_payment)
-                    }
+                data = {
+                    'age': int(age),
+                    'gender': 0 if gender == 'Женщина' else 1,
+                    'child_total': int(children),
+                    'dependants': int(dependants),
+                    'socstatus_work_fl': 0 if soc_work == 'Безработный' else 1,
+                    'socstatus_pens_fl': 0 if soc_pen == 'Не пенсионер' else 1,
+                    'fl_presence_fl': 0 if fl_pres == 'Нет' else 1,
+                    'own_auto': int(cars),
+                    'family_income': get_fam_income(fam_inc),
+                    'personal_income': float(per_inc),
+                    'loan_num_total': int(loan_num),
+                    'loan_num_closed': int(cl_loan_num),
+                    'last_credit': float(last_loan),
+                    'term': int(term),
+                    'fst_payment': float(fst_payment)
+                }
                 res = make_prediction(data)
                 if res:
                     st.write('## Предсказание:')
